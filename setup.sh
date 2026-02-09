@@ -85,10 +85,10 @@ DISCORD_TOKEN=${DISCORD_TOKEN}
 APPLICATION_ID=${APPLICATION_ID}
 
 # Optional: Default working directory (defaults to current directory)
-# WORK_DIR=/path/to/your/project
+WORK_DIR=${WORK_DIR}
 
 # Optional: User ID for mentions when Claude finishes
-# USER_ID=your_discord_user_id
+USER_ID=${USER_ID}
 
 # Optional: Category name for organizing channels
 # CATEGORY_NAME=claude-code

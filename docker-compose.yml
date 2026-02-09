@@ -10,12 +10,10 @@ services:
     restart: unless-stopped
     
     # Environment variables (use .env file or set here)
+    env_file:
+      - ./.env
     environment:
-      - DISCORD_TOKEN=${DISCORD_TOKEN}
-      - APPLICATION_ID=${APPLICATION_ID}
-      - WORK_DIR=${WORK_DIR:-/app/workspace}
-      - USER_ID=${USER_ID:-}
-      - CATEGORY_NAME=${CATEGORY_NAME:-claude-code}
+      - WORK_DIR=/app/workspace
     
     # Volume mounts for persistence and workspace access
     volumes:
@@ -23,7 +21,9 @@ services:
       - bot-data:/app/.bot-data
       # Optional: Mount your local workspace for Claude to work on
       # Uncomment and modify path as needed:
-      # - /path/to/your/project:/app/workspace
+      - /home/ubuntu-beelink/Documents/projects/panamera_python3:/app/workspace
+      # Mount host Claude credentials for authentication
+      - /home/ubuntu-beelink/.claude:/home/claude/.claude
     
     # Resource limits (adjust based on your needs)
     deploy:

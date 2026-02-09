@@ -9,12 +9,21 @@ WORKDIR /app
 # Set environment variable to indicate Docker container
 ENV DOCKER_CONTAINER=true
 
-# Install git (required for branch tracking features)
+# Install git, Node.js, Claude Code CLI, Python 3.11, and system dependencies
 USER root
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    git curl \
+    python3 python3-dev python3-venv python3-pip \
+    default-libmysqlclient-dev pkg-config build-essential \
+    libgl1 libglib2.0-0 \
+    && curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g @anthropic-ai/claude-code \
+    && pip install --break-system-packages pipenv \
+    && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user for security
-RUN groupadd -r claude && useradd -r -g claude claude
+# Create non-root user with uid 1000 to match host file permissions
+RUN groupadd -g 1000 claude && useradd -u 1000 -g claude -m claude
 
 # Copy all source files first (as root)
 COPY . .
